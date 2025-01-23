@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工程採購底價預估系統</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
+    <style>
+        .error { color: red; }
+        input[type="number"] { width: 100px; }
+        .card { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        th { background-color: #f8f9fa; }
+        .calculation-area { background-color: #f8f9fa; padding: 16px; border-radius: 8px; }
+    </style>
+</head>
+<body class="bg-gray-100 p-4">
+    <div class="card bg-white shadow-lg rounded-lg">
+        <h1 class="text-xl font-bold text-center mb-6">工程採購底價預估金額</h1>
+        
+        <div class="grid grid-cols-2 gap-4 mb-6">
+            <div>
+                <label class="block mb-2">預算金額</label>
+                <input type="number" id="budget" class="border p-2 rounded" placeholder="請輸入預算金額">
+            </div>
+            <div>
+                <label class="block mb-2">廠商報價</label>
+                <input type="number" id="vendorPrice" class="border p-2 rounded" placeholder="請輸入廠商報價">
+            </div>
+        </div>
+
+        <div id="weightError" class="error mb-4 hidden"></div>
+        <div id="priceError" class="error mb-4 hidden"></div>
+
+        <table class="mb-6">
+            <thead>
+                <tr>
+                    <th>項目</th>
+                    <th>權重%</th>
+                    <th>調整係數</th>
+                    <th>加權調整值</th>
+                    <th>分析說明</th>
+                </tr>
+            </thead>
+            <tbody id="factorsTable">
+                <!-- JavaScript will populate this -->
+            </tbody>
+        </table>
+
+        <div class="calculation-area mt-6">
+            <h2 class="font-bold mb-2">底價預估金額計算過程</h2>
+            <div id="calculationProcess" class="space-y-2">
+                <!-- JavaScript will populate this -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const factors = {
+            imageStrength: { name: '圖說強度', weight: 10, adjustment: 1 },
+            specStrength: { name: '規範強度', weight: 20, adjustment: 1 },
+            contractStability: { name: '契約嚴謹性', weight: 15, adjustment: 1 },
+            costAnalysis: { name: '成本分析', weight: 15, adjustment: 1 },
+            marketCondition: { name: '市場行情', weight: 20, adjustment: 1 },
+            decisionFactor: { name: '決標情形', weight: 20, adjustment: 1 }
+        };
+
+        function calculatePrice() {
+            let totalWeight = 0;
+            let weightedSum = 0;
+            
+            Object.values(factors).forEach(factor => {
+                totalWeight += factor.weight;
+                weightedSum += (factor.weight / 100) * factor.adjustment;
+            });
+
+            const budget = Number(document.getElementById('budget').value || 0);
+            const exactPrice = (budget * weightedSum).toFixed(2);
+            const roundedPrice = Math.round(Number(exactPrice));
+
+            updateUI(totalWeight, weightedSum, exactPrice, roundedPrice);
+        }
+
+        function updateUI(totalWeight, weightedSum, exactPrice, roundedPrice) {
+            // Update factors table
+            const tableBody = document.getElementById('factorsTable');
+            tableBody.innerHTML = '';
+            
+            Object.entries(factors).forEach(([key, factor]) => {
+                const row = document.createElement('tr');
+                const adjustedValue = (factor.weight / totalWeight) * factor.adjustment;
+                
+                row.innerHTML = `
+                    <td class="border p-2">${factor.name}</td>
+                    <td class="border p-2">
+                        <input type="number" value="${factor.weight}" 
+                            onchange="updateFactor('${key}', 'weight', this.value)"
+                            class="w-20 mx-auto" min="0" max="100" step="1">
+                    </td>
+                    <td class="border p-2">
+                        <input type="number" value="${factor.adjustment}"
+                            onchange="updateFactor('${key}', 'adjustment', this.value)"
+                            class="w-24 mx-auto" min="0" max="2" step="0.0001">
+                    </td>
+                    <td class="border p-2 text-center">${adjustedValue.toFixed(4)}</td>
+                    <td class="border p-2"></td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            // Add total row
+            const totalRow = document.createElement('tr');
+            totalRow.className = 'bg-gray-50 font-bold';
+            totalRow.innerHTML = `
+                <td class="border p-2">總計</td>
+                <td class="border p-2 text-center ${totalWeight !== 100 ? 'text-red-600' : ''}">${totalWeight}%</td>
+                <td class="border p-2 text-center">-</td>
+                <td class="border p-2 text-center">${weightedSum.toFixed(4)}</td>
+                <td class="border p-2"></td>
+            `;
+            tableBody.appendChild(totalRow);
+
+            // Update calculation process
+            const budget = document.getElementById('budget').value;
+            if (budget) {
+                document.getElementById('calculationProcess').innerHTML = `
+                    <div>1. 各項加權調整值計算：</div>
+                    ${Object.entries(factors).map(([key, factor]) => `
+                        <div class="ml-4">• ${factor.name}：${factor.weight}% × ${factor.adjustment.toFixed(4)} = 
+                            ${((factor.weight / 100) * factor.adjustment).toFixed(4)}
+                        </div>
+                    `).join('')}
+                    <div>2. 總調整係數：${weightedSum.toFixed(4)}</div>
+                    <div>3. 底價預估金額：</div>
+                    <div class="ml-4">• 詳細計算：NT$ ${Number(budget).toLocaleString()} × ${weightedSum.toFixed(4)} = 
+                        NT$ ${Number(exactPrice).toLocaleString('zh-TW', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        })}
+                    </div>
+                    <div class="ml-4">• 金額：NT$ ${roundedPrice.toLocaleString('zh-TW')} (四捨五入)</div>
+                `;
+            }
+
+            // Show weight error if needed
+            const weightError = document.getElementById('weightError');
+            if (totalWeight !== 100) {
+                weightError.textContent = `權重總和必須為100%（目前：${totalWeight}%）`;
+                weightError.classList.remove('hidden');
+            } else {
+                weightError.classList.add('hidden');
+            }
+        }
+
+        function updateFactor(key, property, value) {
+            const newValue = Math.max(0, Math.min(property === 'weight' ? 100 : 2, Number(value) || 0));
+            factors[key][property] = newValue;
+            calculatePrice();
+        }
+
+        // Initial calculation
+        calculatePrice();
+
+        // Add event listeners
+        document.getElementById('budget').addEventListener('input', calculatePrice);
+        document.getElementById('vendorPrice').addEventListener('input', calculatePrice);
+    </script>
+</body>
+</html>
