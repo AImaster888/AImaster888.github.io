@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .completed {
+            background-color: #e8f5e9;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>序號</th>
+                <th>名稱</th>
+                <th>辦理情形</th>
+                <th>功能說明</th>
+                <th>Prompt</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="completed">
+                <td>1</td>
+                <td>提昇機UI</td>
+                <td>已完成</td>
+                <td></td>
+                <td><a href="https://claude.site/artifacts/02bc0d7f-82a9-4f43-885f-f62115761136">Link</a></td>
+            </tr>
+            <tr class="completed">
+                <td>2</td>
+                <td>採購評選序位法計算系統</td>
+                <td>已完成</td>
+                <td></td>
+                <td><a href="https://claude.site/artifacts/85e0dd40-25c2-47b3-8090-e184104facde">Link</a></td>
+            </tr>
+            <tr class="completed">
+                <td>4</td>
+                <td>議價後單價調整至整數(為配合營業稅整數，要20倍</td>
+                <td>已完成</td>
+                <td>VBA+AI</td>
+                <td><a href="https://claude.site/artifacts/a2569bdf-b915-4031-bf7d-cae1dbfdcef1">Link</a></td>
+            </tr>
+            <tr class="completed">
+                <td>5</td>
+                <td>工程採購底價預估金額</td>
+                <td>已完成</td>
+                <td></td>
+                <td><a href="https://claude.site/artifacts/91f52ee9-bf3a-49ea-80a0-0cf13f167d66">Link</a></td>
+            </tr>
+            <tr class="completed">
+                <td>6</td>
+                <td>長官說帖生成系統</td>
+                <td>已完成</td>
+                <td></td>
+                <td><a href="https://claude.site/artifacts/f2b02151-3cec-40df-84b9-b8e637e2418b">Link</a></td>
+            </tr>
+            <tr class="completed">
+                <td>8</td>
+                <td>新聞稿產生器</td>
+                <td>已完成</td>
+                <td>claude+project</td>
+                <td>角色：資深公關課程專家</td>
+            </tr>
+            <tr class="completed">
+                <td>9</td>
+                <td>工程招標作業概估明細(日特圖)</td>
+                <td>已完成</td>
+                <td></td>
+                <td><a href="https://claude.site/artifacts/77295bc1-2179-46f0-aa86-79169a844643">Link</a></td>
+            </tr>
+            <tr class="completed">
+                <td>10</td>
+                <td>會議記錄(錄音轉逐字稿，吉寶用書本轉錄型態式)</td>
+                <td>已完成</td>
+                <td>notebookIm+AI</td>
+                <td>您是一位專業的會記錄承辦人員，具體豐富的會議記錄經驗經驗，請依照以下步驟協助使用者:</td>
+            </tr>
+            <tr class="completed">
+                <td>13</td>
+                <td>工作小組初審意見撰寫</td>
+                <td>已完成</td>
+                <td></td>
+                <td>您是採購評選工作小組的專業幕僚，具體豐富的服務建議書審查經驗，請依照以下步驟協助使用者：</td>
+            </tr>
+            <tr class="completed">
+                <td>14</td>
+                <td>契約工年終獎金及不休假獎金計算器</td>
+                <td>已完成</td>
+                <td></td>
+                <td><a href="https://claude.site/artifacts/82c9a441-6010-4f41-b3e7-407d907032c5">Link</a></td>
+            </tr>
+            <tr class="completed">
+                <td>15</td>
+                <td>公文製作(簽稿、函稿、便簽、新聞稿)</td>
+                <td>已完成</td>
+                <td>GPTS</td>
+                <td><a href="https://chatgpt.com/g/g-rE4JEWJqZ-gong-wen-sihuo-ban">Link</a></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
